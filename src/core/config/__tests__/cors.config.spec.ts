@@ -3,7 +3,9 @@ import { getCorsConfig } from '../cors.config';
 describe('getCorsConfig', () => {
 	it('returns split origins and credentials support', () => {
 		const configService = {
-			getOrThrow: jest.fn().mockReturnValue('https://a.example,https://b.example'),
+			getOrThrow: jest
+				.fn()
+				.mockReturnValue('https://a.example,https://b.example'),
 		};
 
 		expect(getCorsConfig(configService as never)).toEqual({

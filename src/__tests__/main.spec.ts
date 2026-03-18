@@ -51,7 +51,7 @@ describe('main bootstrap', () => {
 			return {
 				...actual,
 				Logger: jest.fn().mockImplementation(() => ({ log })),
-				ValidationPipe: jest.fn().mockImplementation((config) => {
+				ValidationPipe: jest.fn().mockImplementation(config => {
 					validationPipeConfig.push(config);
 					return { config };
 				}),

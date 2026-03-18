@@ -2,9 +2,9 @@ import { MODULE_METADATA } from '@nestjs/common/constants';
 import { ConfigModule } from '@nestjs/config';
 import 'reflect-metadata';
 
+import { AuthModule } from '../../modules/auth/auth.module';
 import { AppController } from '../app.controller';
 import { AppModule } from '../app.module';
-import { AuthModule } from '../../modules/auth/auth.module';
 
 describe('AppModule', () => {
 	it('registers the expected controller', () => {

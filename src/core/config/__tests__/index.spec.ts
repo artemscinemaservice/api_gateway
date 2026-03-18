@@ -1,5 +1,5 @@
-import * as configExports from '../index';
 import { getCorsConfig } from '../cors.config';
+import * as configExports from '../index';
 import { setupSwagger } from '../swagger.config';
 
 describe('config barrel exports', () => {
