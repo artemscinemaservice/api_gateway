@@ -83,24 +83,29 @@ describe('main bootstrap', () => {
 		});
 		expect(setTitle).toHaveBeenCalledWith('API Gateway');
 		expect(setDescription).toHaveBeenCalledWith(
-			'API Gateway for handling requests',
+			'API Gateway for handling requests'
 		);
 		expect(setVersion).toHaveBeenCalledWith('1.0.0');
 		expect(addBearerAuth).toHaveBeenCalled();
 		expect(build).toHaveBeenCalled();
 		expect(createDocument).toHaveBeenCalledWith(app, { built: true });
-		expect(setup).toHaveBeenCalledWith('docs', app, { openapi: '3.0.0' }, {
-			yamlDocumentUrl: '/openapi.yaml',
-			jsonDocumentUrl: '/openapi.json',
-		});
+		expect(setup).toHaveBeenCalledWith(
+			'docs',
+			app,
+			{ openapi: '3.0.0' },
+			{
+				yamlDocumentUrl: '/openapi.yaml',
+				jsonDocumentUrl: '/openapi.json',
+			}
+		);
 		expect(listen).toHaveBeenCalledWith(3000);
 		expect(log).toHaveBeenNthCalledWith(
 			1,
-			'API Gateway started at http://localhost:3000:3000',
+			'API Gateway started at http://localhost:3000:3000'
 		);
 		expect(log).toHaveBeenNthCalledWith(
 			2,
-			'Swagger started at http://localhost:3000/docs',
+			'Swagger started at http://localhost:3000/docs'
 		);
 	});
 });

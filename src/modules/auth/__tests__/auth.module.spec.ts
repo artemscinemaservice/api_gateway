@@ -1,6 +1,5 @@
-import 'reflect-metadata';
-
 import { MODULE_METADATA } from '@nestjs/common/constants';
+import 'reflect-metadata';
 
 import { AuthController } from '../auth.controller';
 import { AuthModule } from '../auth.module';
@@ -11,8 +10,8 @@ describe('AuthModule', () => {
 	});
 
 	it('registers the auth controller', () => {
-		expect(Reflect.getMetadata(MODULE_METADATA.CONTROLLERS, AuthModule)).toEqual([
-			AuthController,
-		]);
+		expect(
+			Reflect.getMetadata(MODULE_METADATA.CONTROLLERS, AuthModule)
+		).toEqual([AuthController]);
 	});
 });

@@ -8,6 +8,8 @@ describe('dto barrel exports', () => {
 	});
 
 	it('re-exports response DTOs from the responses barrel', () => {
-		expect(responseExports.HealthCheckResponseDto).toBe(HealthCheckResponseDto);
+		expect(responseExports.HealthCheckResponseDto).toBe(
+			HealthCheckResponseDto
+		);
 	});
 });

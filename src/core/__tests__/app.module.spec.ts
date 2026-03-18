@@ -1,20 +1,22 @@
-import 'reflect-metadata';
-
 import { MODULE_METADATA } from '@nestjs/common/constants';
 import { ConfigModule } from '@nestjs/config';
+import 'reflect-metadata';
 
 import { AppController } from '../app.controller';
 import { AppModule } from '../app.module';
 
 describe('AppModule', () => {
 	it('registers the expected controller', () => {
-		expect(Reflect.getMetadata(MODULE_METADATA.CONTROLLERS, AppModule)).toEqual([
-			AppController,
-		]);
+		expect(
+			Reflect.getMetadata(MODULE_METADATA.CONTROLLERS, AppModule)
+		).toEqual([AppController]);
 	});
 
 	it('configures ConfigModule as a global import', async () => {
-		const imports = Reflect.getMetadata(MODULE_METADATA.IMPORTS, AppModule) as Array<{
+		const imports = Reflect.getMetadata(
+			MODULE_METADATA.IMPORTS,
+			AppModule
+		) as Array<{
 			then?: (onfulfilled?: (value: unknown) => unknown) => unknown;
 		}>;
 
@@ -23,7 +25,7 @@ describe('AppModule', () => {
 			expect.objectContaining({
 				module: ConfigModule,
 				global: true,
-			}),
+			})
 		);
 	});
 });

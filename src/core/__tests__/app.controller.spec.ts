@@ -2,7 +2,9 @@ import { AppController } from '../app.controller';
 
 describe('AppController', () => {
 	beforeEach(() => {
-		jest.useFakeTimers().setSystemTime(new Date('2026-03-18T16:15:37.045Z'));
+		jest.useFakeTimers().setSystemTime(
+			new Date('2026-03-18T16:15:37.045Z')
+		);
 	});
 
 	afterEach(() => {
