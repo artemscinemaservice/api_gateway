@@ -71,7 +71,7 @@ describe('main bootstrap', () => {
 		});
 
 		jest.isolateModules(() => {
-			require('./main');
+			require('../main');
 		});
 
 		await Promise.resolve();

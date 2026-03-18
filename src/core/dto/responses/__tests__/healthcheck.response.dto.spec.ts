@@ -1,4 +1,4 @@
-import { HealthCheckResponseDto } from './healthcheck.response.dto';
+import { HealthCheckResponseDto } from '../healthcheck.response.dto';
 
 describe('HealthCheckResponseDto', () => {
 	it('can be used as the healthcheck response shape', () => {

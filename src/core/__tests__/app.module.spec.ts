@@ -3,8 +3,8 @@ import 'reflect-metadata';
 import { MODULE_METADATA } from '@nestjs/common/constants';
 import { ConfigModule } from '@nestjs/config';
 
-import { AppController } from './app.controller';
-import { AppModule } from './app.module';
+import { AppController } from '../app.controller';
+import { AppModule } from '../app.module';
 
 describe('AppModule', () => {
 	it('registers the expected controller', () => {

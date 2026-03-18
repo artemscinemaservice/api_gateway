@@ -1,6 +1,6 @@
-import * as dtoExports from './index';
-import * as responseExports from './responses';
-import { HealthCheckResponseDto } from './responses';
+import * as dtoExports from '../index';
+import * as responseExports from '../responses';
+import { HealthCheckResponseDto } from '../responses';
 
 describe('dto barrel exports', () => {
 	it('re-exports response DTOs from the top-level dto barrel', () => {
