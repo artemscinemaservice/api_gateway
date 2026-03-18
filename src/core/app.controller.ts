@@ -1,11 +1,19 @@
 import { Controller, Get } from '@nestjs/common';
-import { timestamp } from 'rxjs';
+import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
+
+import { HealthCheckResponseDto } from './dto';
 
 @Controller()
 export class AppController {
-
-    @Get('health')
-    heathCheck(){
-        return {status: 'ok', timestamp: new Date().toISOString() };
-    }
+	@ApiOperation({
+		summary: 'Healthcheck endpoint',
+		description: 'Returns the status of the API Gateway',
+	})
+	@ApiOkResponse({
+		type: HealthCheckResponseDto,
+	})
+	@Get('/health')
+	heathCheck() {
+		return { status: 'ok', timestamp: new Date().toISOString() };
+	}
 }
