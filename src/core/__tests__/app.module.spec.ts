@@ -4,6 +4,7 @@ import 'reflect-metadata';
 
 import { AppController } from '../app.controller';
 import { AppModule } from '../app.module';
+import { AuthModule } from '../../modules/auth/auth.module';
 
 describe('AppModule', () => {
 	it('registers the expected controller', () => {
@@ -20,12 +21,13 @@ describe('AppModule', () => {
 			then?: (onfulfilled?: (value: unknown) => unknown) => unknown;
 		}>;
 
-		expect(imports).toHaveLength(1);
+		expect(imports).toHaveLength(2);
 		await expect(imports[0]).resolves.toEqual(
 			expect.objectContaining({
 				module: ConfigModule,
 				global: true,
 			})
 		);
+		expect(imports[1]).toBe(AuthModule);
 	});
 });

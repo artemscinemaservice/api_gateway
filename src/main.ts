@@ -1,33 +1,25 @@
-import { Logger } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 import { AppModule } from './core/app.module';
+import { getCorsConfig, setupSwagger } from './core/config';
 
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule);
 
+	app.useGlobalPipes(
+		new ValidationPipe({
+			transform: true,
+			whitelist: true,
+		})
+	);
+
 	const config = app.get(ConfigService);
 	const logger = new Logger();
 
-	app.enableCors({
-		origin: config.getOrThrow<string>('HTTP_CORS').split(','),
-		credentials: true,
-	});
-
-	const swaggerConfig = new DocumentBuilder()
-		.setTitle('API Gateway')
-		.setDescription('API Gateway for handling requests')
-		.setVersion('1.0.0')
-		.addBearerAuth()
-		.build();
-
-	const swaggerDocument = SwaggerModule.createDocument(app, swaggerConfig);
-	SwaggerModule.setup('docs', app, swaggerDocument, {
-		yamlDocumentUrl: '/openapi.yaml',
-		jsonDocumentUrl: '/openapi.json',
-	});
+	app.enableCors(getCorsConfig(config));
+	setupSwagger(app);
 
 	const port = config.getOrThrow<number>('HTTP_PORT');
 	const host = config.getOrThrow<string>('HTTP_HOST');

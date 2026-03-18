@@ -4,30 +4,29 @@ describe('main bootstrap', () => {
 		jest.clearAllMocks();
 	});
 
-	it('boots the app, configures swagger and starts listening', async () => {
-		const createDocument = jest.fn().mockReturnValue({ openapi: '3.0.0' });
-		const setup = jest.fn();
-		const setTitle = jest.fn().mockReturnThis();
-		const setDescription = jest.fn().mockReturnThis();
-		const setVersion = jest.fn().mockReturnThis();
-		const addBearerAuth = jest.fn().mockReturnThis();
-		const build = jest.fn().mockReturnValue({ built: true });
+	it('boots the app, configures global pipes, cors, swagger and starts listening', async () => {
 		const listen = jest.fn().mockResolvedValue(undefined);
 		const enableCors = jest.fn();
+		const useGlobalPipes = jest.fn();
 		const get = jest.fn();
+		const getCorsConfig = jest.fn().mockReturnValue({
+			origin: ['https://a.example', 'https://b.example'],
+			credentials: true,
+		});
+		const setupSwagger = jest.fn();
 		const getOrThrow = jest.fn((key: string) => {
-			switch (key) {
-				case 'HTTP_CORS':
-					return 'https://a.example,https://b.example';
-				case 'HTTP_PORT':
-					return 3000;
-				case 'HTTP_HOST':
-					return 'http://localhost:3000';
-				default:
-					throw new Error(`Unexpected config key: ${key}`);
+			if (key === 'HTTP_PORT') {
+				return 3000;
 			}
+
+			if (key === 'HTTP_HOST') {
+				return 'http://localhost:3000';
+			}
+
+			throw new Error(`Unexpected config key: ${key}`);
 		});
 		const log = jest.fn();
+		const validationPipeConfig: Record<string, unknown>[] = [];
 
 		get.mockReturnValue({ getOrThrow });
 
@@ -35,6 +34,7 @@ describe('main bootstrap', () => {
 			get,
 			enableCors,
 			listen,
+			useGlobalPipes,
 		};
 
 		jest.doMock('@nestjs/core', () => ({
@@ -42,33 +42,25 @@ describe('main bootstrap', () => {
 				create: jest.fn().mockResolvedValue(app),
 			},
 		}));
+		jest.doMock('../core/app.module', () => ({
+			AppModule: class AppModule {},
+		}));
 		jest.doMock('@nestjs/common', () => {
 			const actual = jest.requireActual('@nestjs/common');
 
 			return {
 				...actual,
 				Logger: jest.fn().mockImplementation(() => ({ log })),
+				ValidationPipe: jest.fn().mockImplementation((config) => {
+					validationPipeConfig.push(config);
+					return { config };
+				}),
 			};
 		});
-		jest.doMock('@nestjs/swagger', () => {
-			const actual = jest.requireActual('@nestjs/swagger');
-
-			return {
-				...actual,
-				DocumentBuilder: jest.fn().mockImplementation(() => ({
-					setTitle,
-					setDescription,
-					setVersion,
-					addBearerAuth,
-					build,
-				})),
-				SwaggerModule: {
-					...actual.SwaggerModule,
-					createDocument,
-					setup,
-				},
-			};
-		});
+		jest.doMock('../core/config', () => ({
+			getCorsConfig,
+			setupSwagger,
+		}));
 
 		jest.isolateModules(() => {
 			require('../main');
@@ -77,27 +69,19 @@ describe('main bootstrap', () => {
 		await Promise.resolve();
 		await Promise.resolve();
 
+		expect(useGlobalPipes).toHaveBeenCalledTimes(1);
+		expect(validationPipeConfig).toEqual([
+			{
+				transform: true,
+				whitelist: true,
+			},
+		]);
+		expect(getCorsConfig).toHaveBeenCalledWith({ getOrThrow });
 		expect(enableCors).toHaveBeenCalledWith({
 			origin: ['https://a.example', 'https://b.example'],
 			credentials: true,
 		});
-		expect(setTitle).toHaveBeenCalledWith('API Gateway');
-		expect(setDescription).toHaveBeenCalledWith(
-			'API Gateway for handling requests'
-		);
-		expect(setVersion).toHaveBeenCalledWith('1.0.0');
-		expect(addBearerAuth).toHaveBeenCalled();
-		expect(build).toHaveBeenCalled();
-		expect(createDocument).toHaveBeenCalledWith(app, { built: true });
-		expect(setup).toHaveBeenCalledWith(
-			'docs',
-			app,
-			{ openapi: '3.0.0' },
-			{
-				yamlDocumentUrl: '/openapi.yaml',
-				jsonDocumentUrl: '/openapi.json',
-			}
-		);
+		expect(setupSwagger).toHaveBeenCalledWith(app);
 		expect(listen).toHaveBeenCalledWith(3000);
 		expect(log).toHaveBeenNthCalledWith(
 			1,
