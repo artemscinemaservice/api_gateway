@@ -1,44 +1,36 @@
+import type { INestApplication } from '@nestjs/common';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+
+import { setupSwagger } from '../swagger.config';
+
 describe('setupSwagger', () => {
 	afterEach(() => {
-		jest.resetModules();
-		jest.clearAllMocks();
+		jest.restoreAllMocks();
 	});
 
 	it('builds the swagger document and mounts the docs endpoints', () => {
-		const createDocument = jest.fn().mockReturnValue({ openapi: '3.0.0' });
-		const setup = jest.fn();
-		const setTitle = jest.fn().mockReturnThis();
-		const setDescription = jest.fn().mockReturnThis();
-		const setVersion = jest.fn().mockReturnThis();
-		const addBearerAuth = jest.fn().mockReturnThis();
-		const build = jest.fn().mockReturnValue({ built: true });
-		const app = {} as Parameters<typeof createDocument>[0];
-
-		jest.doMock('@nestjs/swagger', () => {
-			const actual = jest.requireActual('@nestjs/swagger');
-
-			return {
-				...actual,
-				DocumentBuilder: jest.fn().mockImplementation(() => ({
-					setTitle,
-					setDescription,
-					setVersion,
-					addBearerAuth,
-					build,
-				})),
-				SwaggerModule: {
-					...actual.SwaggerModule,
-					createDocument,
-					setup,
-				},
-			};
-		});
-
-		let setupSwagger: typeof import('../swagger.config').setupSwagger;
-
-		jest.isolateModules(() => {
-			({ setupSwagger } = require('../swagger.config'));
-		});
+		const app = {} as INestApplication;
+		const swaggerDocument = { openapi: '3.0.0' };
+		const swaggerConfig = { built: true };
+		const setTitle = jest
+			.spyOn(DocumentBuilder.prototype, 'setTitle')
+			.mockReturnThis();
+		const setDescription = jest
+			.spyOn(DocumentBuilder.prototype, 'setDescription')
+			.mockReturnThis();
+		const setVersion = jest
+			.spyOn(DocumentBuilder.prototype, 'setVersion')
+			.mockReturnThis();
+		const addBearerAuth = jest
+			.spyOn(DocumentBuilder.prototype, 'addBearerAuth')
+			.mockReturnThis();
+		const build = jest
+			.spyOn(DocumentBuilder.prototype, 'build')
+			.mockReturnValue(swaggerConfig as never);
+		const createDocument = jest
+			.spyOn(SwaggerModule, 'createDocument')
+			.mockReturnValue(swaggerDocument as never);
+		const setup = jest.spyOn(SwaggerModule, 'setup').mockImplementation();
 
 		setupSwagger(app);
 
@@ -49,15 +41,10 @@ describe('setupSwagger', () => {
 		expect(setVersion).toHaveBeenCalledWith('1.0.0');
 		expect(addBearerAuth).toHaveBeenCalled();
 		expect(build).toHaveBeenCalled();
-		expect(createDocument).toHaveBeenCalledWith(app, { built: true });
-		expect(setup).toHaveBeenCalledWith(
-			'docs',
-			app,
-			{ openapi: '3.0.0' },
-			{
-				yamlDocumentUrl: '/openapi.yaml',
-				jsonDocumentUrl: '/openapi.json',
-			}
-		);
+		expect(createDocument).toHaveBeenCalledWith(app, swaggerConfig);
+		expect(setup).toHaveBeenCalledWith('docs', app, swaggerDocument, {
+			yamlDocumentUrl: '/openapi.yaml',
+			jsonDocumentUrl: '/openapi.json',
+		});
 	});
 });

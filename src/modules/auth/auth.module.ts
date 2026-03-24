@@ -1,9 +1,30 @@
 import { Module } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { ClientsModule, Transport } from '@nestjs/microservices';
+import { AUTH_SERVICE_TOKEN } from 'src/core/utils';
 
 import { AuthController } from './auth.controller';
+import { AuthClientGrpc } from './auth.grpc';
 
 @Module({
 	controllers: [AuthController],
-	providers: [],
+	providers: [AuthClientGrpc],
+	imports: [
+		ClientsModule.registerAsync([
+			{
+				name: AUTH_SERVICE_TOKEN,
+				useFactory: (configService: ConfigService) => ({
+					transport: Transport.GRPC,
+					options: {
+						package: 'auth.v1',
+						protoPath:
+							'node_modules/@artemscinemaservice/contracts/proto/auth.proto',
+						url: configService.getOrThrow<string>('AUTH_GRPC_URL'),
+					},
+				}),
+				inject: [ConfigService],
+			},
+		]),
+	],
 })
 export class AuthModule {}
