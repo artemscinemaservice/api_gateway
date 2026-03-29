@@ -1,5 +1,6 @@
 import {
 	AuthServiceClient,
+	type VerifyOtpRequest,
 	type SendOtpRequest,
 } from '@artemscinemaservice/contracts/gen/auth';
 import { Inject, Injectable, type OnModuleInit } from '@nestjs/common';
@@ -21,5 +22,9 @@ export class AuthClientGrpc implements OnModuleInit {
 
 	public sendOtp(request: SendOtpRequest) {
 		return this.authService.sendOtp(request);
+	}
+
+	verifyOtp(request: VerifyOtpRequest) {
+		return this.authService.verifyOtp(request);
 	}
 }
