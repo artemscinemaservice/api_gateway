@@ -1,7 +1,7 @@
 import {
 	AuthServiceClient,
-	type VerifyOtpRequest,
 	type SendOtpRequest,
+	type VerifyOtpRequest,
 } from '@artemscinemaservice/contracts/gen/auth';
 import { Inject, Injectable, type OnModuleInit } from '@nestjs/common';
 import { type ClientGrpc } from '@nestjs/microservices';

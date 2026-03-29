@@ -8,7 +8,6 @@ import { SendOtpRequest, VerifyOtpRequest } from './dto';
 export class AuthController {
 	public constructor(private readonly authClientGrpc: AuthClientGrpc) {}
 
-
 	@ApiOperation({
 		summary: 'Send OTP to the specified identifier (phone or email)',
 	})
