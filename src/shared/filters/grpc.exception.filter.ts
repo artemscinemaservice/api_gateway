@@ -1,15 +1,13 @@
+import { RpcStatus } from '@artemscinemaservice/core/enums';
 import {
 	ArgumentsHost,
 	Catch,
 	type ExceptionFilter,
 	HttpException,
 } from '@nestjs/common';
-import type { Response } from 'express'
-import { RpcStatus } from '@artemscinemaservice/core/enums'
+import type { Response } from 'express';
 
-import { grpcToHttpStatus } from '../utils'
-
-
+import { grpcToHttpStatus } from '../utils';
 
 type GrpcError = {
 	code: RpcStatus;
