@@ -22,7 +22,7 @@
 	},
 	"dependencies": {
 		"@artemscinemaservice/contracts": "^2.0.0",
-		"@artemscinemaservice/core": "^1.1.4",
+		"@artemscinemaservice/core": "^3.0.0",
 		"@grpc/grpc-js": "^1.14.3",
 		"@grpc/proto-loader": "^0.8.0",
 		"@nestjs/common": "^11.0.1",

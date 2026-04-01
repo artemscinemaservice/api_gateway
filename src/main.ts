@@ -8,6 +8,7 @@ import {
 	getValidationPipeConfig,
 	setupSwagger,
 } from './core/config';
+import { GrpcExceptionFilter } from './shared/filters';
 
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule);
@@ -16,6 +17,7 @@ async function bootstrap() {
 	const logger = new Logger();
 
 	app.useGlobalPipes(new ValidationPipe(getValidationPipeConfig()));
+	app.useGlobalFilters(new GrpcExceptionFilter());
 	app.enableCors(getCorsConfig(config));
 	setupSwagger(app);
 

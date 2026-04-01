@@ -68,10 +68,10 @@
     "@nestjs/microservices" "^11.1.17"
     rxjs "^7.8.2"
 
-"@artemscinemaservice/core@^1.1.4":
-  version "1.1.4"
-  resolved "https://registry.yarnpkg.com/@artemscinemaservice/core/-/core-1.1.4.tgz#a28ddb07bcf7b8617d530679c6dccc5684279324"
-  integrity sha512-yc84x4f0K3HdEG6jqZQAOPKa90ysViRJ9Mw5iJIjXPKG4vi8JQr53WjxBGJTVT8l2Um17OKA2pgvxhrhpDZsxA==
+"@artemscinemaservice/core@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@artemscinemaservice/core/-/core-3.0.0.tgz#ff0f0d0a3d9532fb4bf01747685edf0292f2daaf"
+  integrity sha512-13vu9iMnvg0jLTPTCbXWTSum51pDM6YhWzi1JZHuujPvV9svFfuEAknda3LrOcxhiIUDBpSAqWSidn5WcR+WIw==
   dependencies:
     "@trivago/prettier-plugin-sort-imports" "^5.2.2"
     eslint-config-prettier "^9"
