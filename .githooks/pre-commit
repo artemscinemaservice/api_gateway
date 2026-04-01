@@ -2,4 +2,32 @@
 
 set -e
 
-yarn lint
+tmp_lint_files="$(mktemp)"
+trap 'rm -f "$tmp_lint_files"' EXIT HUP INT TERM
+
+git diff --cached --name-only --diff-filter=ACMR | while IFS= read -r file; do
+	[ -z "$file" ] && continue
+
+	case "$file" in
+		src/*.ts|apps/*.ts|libs/*.ts|test/*.ts)
+			[ -f "$file" ] || continue
+
+			if ! git diff --quiet -- "$file"; then
+				echo "pre-commit: $file has unstaged changes. Stage or stash them before committing." >&2
+				exit 1
+			fi
+
+			printf '%s\n' "$file" >> "$tmp_lint_files"
+			;;
+	esac
+done
+
+[ -s "$tmp_lint_files" ] || exit 0
+
+while IFS= read -r file; do
+	[ -z "$file" ] && continue
+
+	echo "pre-commit: linting $file"
+	yarn eslint --fix --no-warn-ignored -- "$file"
+	git add -- "$file"
+done < "$tmp_lint_files"
