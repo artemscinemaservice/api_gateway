@@ -60,10 +60,10 @@
     ora "5.4.1"
     rxjs "7.8.1"
 
-"@artemscinemaservice/contracts@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@artemscinemaservice/contracts/-/contracts-2.0.0.tgz#1ebe1c7b146f98d24c3339ccea9e5b5e16783ad9"
-  integrity sha512-biuNJPn1yCgOEuy7rt/U/0FnJul0/RT5jNJMNFAqazi37rgS9JbWO4KI600wG0o9IaxuS5uJ9Nc8mPXBmnJHcQ==
+"@artemscinemaservice/contracts@^2.2.1":
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@artemscinemaservice/contracts/-/contracts-2.2.1.tgz#529bb9243ed132fb4da6ff5d432dedbcd0e0d821"
+  integrity sha512-dMK3NqkfDT6qjpG/jL78EPwxqbhIrKVcsAQgX2lh1HgJ4s3GNLqGKVmxMFECgs2pfyWw8PgJ9OmpD2OPxTCrLA==
   dependencies:
     "@nestjs/microservices" "^11.1.17"
     rxjs "^7.8.2"

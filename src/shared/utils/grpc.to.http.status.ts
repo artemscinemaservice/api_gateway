@@ -1,6 +1,5 @@
+import { RpcStatus } from '@artemscinemaservice/core/enums';
 import { HttpStatus } from '@nestjs/common';
-
-import { RpcStatus } from '../../../../core/src/enums';
 
 export const grpcToHttpStatus: Record<RpcStatus, HttpStatus> = {
 	[RpcStatus.OK]: HttpStatus.OK,

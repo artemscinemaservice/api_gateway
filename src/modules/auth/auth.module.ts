@@ -1,3 +1,4 @@
+import { PROTO_PATH } from '@artemscinemaservice/contracts';
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
@@ -17,8 +18,7 @@ import { AuthClientGrpc } from './auth.grpc';
 					transport: Transport.GRPC,
 					options: {
 						package: 'auth.v1',
-						protoPath:
-							'node_modules/@artemscinemaservice/contracts/proto/auth.proto',
+						protoPath: PROTO_PATH.AUTH,
 						url: configService.getOrThrow<string>('AUTH_GRPC_URL'),
 					},
 				}),
