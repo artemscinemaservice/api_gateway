@@ -49,7 +49,8 @@ export class GrpcExceptionFilter implements ExceptionFilter {
 			typeof error === 'object' &&
 			error !== null &&
 			'code' in error &&
-			typeof (error as any).code === 'number'
+			typeof (error as any).code === 'number' &&
+			'details' in error
 		);
 	}
 }
