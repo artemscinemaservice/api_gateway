@@ -27,6 +27,7 @@ Required local environment variables:
 ```text
 HTTP_HOST=http://localhost:3000
 HTTP_PORT=3000
+HTTP_CORS=http://localhost:3000
 AUTH_GRPC_URL=localhost:50051
 ```
 
